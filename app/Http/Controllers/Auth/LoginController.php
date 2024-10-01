@@ -37,4 +37,20 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
         $this->middleware('auth')->only('logout');
     }
+
+    protected function authenticated($request, $user)
+    {
+        // Check if the user has a role of 'admin'
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.staff.index');
+        }
+
+        // Check if the user has a role of 'staff'
+        if ($user->role === 'staff') {
+            return redirect()->route('staff.dashboard');
+        }
+
+        // Default redirect (for other roles or cases)
+        return redirect('/home');
+    }
 }

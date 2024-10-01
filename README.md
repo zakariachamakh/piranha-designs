@@ -1,66 +1,160 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Features
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+### Admin Features:
 
-## About Laravel
+- **Staff Management:**
+    - Add new staff members.
+    - View a list of all staff members.
+    - Edit staff details (name, email, status).
+    - Soft delete staff members.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Policy Management:**
+    - View all policies assigned to a specific staff member.
+    - Assign new policies to staff.
+    - Remove policies from staff members.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Staff Features:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Dashboard:**
+    - View assigned policies.
+    - View details of individual policies.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Installation & Setup
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Requirements
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- PHP 8.3+
+- Composer
+- MySQL
 
-## Laravel Sponsors
+### Step 1: Clone the repository
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+git clone https://github.com/your-repo/staff-management-system.git
+cd staff-management-system
+```
 
-### Premium Partners
+### Step 2: Install dependencies
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+```bash
+composer install
+npm install
+```
 
-## Contributing
+### Step 3: Set up environment variables
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Copy the ``.`env`.example`` to `.env` and configure your database and mail settings:
 
-## Code of Conduct
+```bash
+cp .env.example .env
+php artisan key:generate
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+//.env
+DB_DATABASE=your_database
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+```
 
-## Security Vulnerabilities
+### Step 4: Database migration
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Run the migrations to set up the database structure:
 
-## License
+```bash
+php artisan migrate
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Step 5: Seed the database
+
+To seed users and policies, run:
+
+```bash
+php artisan db:seed
+```
+
+### Step 6: Start the application
+
+To seed users and policies, run:
+
+```bash
+php artisan serve
+```
+
+## ERD (Entity Relationship Diagram)
+
+### Tables:
+
+#### Users
+
+- **id**: Primary Key
+- **name**: Staff member's name
+- **email**: Staff member's email
+- **password**: Staff member's password (hashed)
+- **role**: Role (admin or staff)
+- **status**: Status (active or invitation_sent)
+
+#### Policies
+
+- **id**: Primary Key
+- **code**: Unique policy code
+- **plan_reference**: Reference for the plan
+- **first_name**: Policy holder's first name
+- **last_name**: Policy holder's last name
+- **investment_house**: Investment house associated with the policy
+- **last_operation**: Date of the last operation
+- **staff_user_id**: Foreign Key (nullable), links to the `users` table (assigned staff)
+
+### Relationships:
+
+- **One-to-Many**: One staff member can be assigned multiple policies, but each policy can only be assigned to one staff
+  member at a time.
+
+## Admin:
+
+### Login & Dashboard:
+
+- Upon login, admins are redirected to the staff management dashboard.
+
+### Staff List & Management:
+
+- Admins can view all staff members with options to add, edit, or delete staff.
+
+### Policy Assignment:
+
+- Admins can assign available policies to staff members.
+
+### Soft Deletion of Staff:
+
+- Admins can soft delete staff, which also unlinks any assigned policies.
+
+---
+
+## Staff:
+
+### Dashboard:
+
+- Staff users can view their assigned policies.
+
+### Policy Details:
+
+- Staff users can view detailed information about each policy.
+
+---
+
+## Routes:
+
+### Admin Routes:
+
+- **GET** `/admin/staff`: View all staff.
+- **POST** `/admin/staff/store`: Add new staff.
+- **GET** `/admin/staff/{id}/policies`: View policies assigned to a staff member.
+- **POST** `/admin/staff/{id}/policies/add`: Assign a policy to a staff member.
+- **DELETE** `/admin/staff/{id}/policies/{policy_id}/remove`: Remove a policy from a staff member.
+
+### Staff Routes:
+
+- **GET** `/staff/dashboard`: View dashboard with assigned policies.
+- **GET** `/staff/policy/{id}`: View policy details.
+
+

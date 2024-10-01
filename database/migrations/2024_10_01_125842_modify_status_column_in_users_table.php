@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->enum('status', ['Active', 'Invitation Sent'])->default('Invitation Sent')->change();
-
+            $table->enum('status', ['active', 'invitation_sent'])->default('invitation_sent')->change();
+            $table->softDeletes(); // Add soft deletes
         });
     }
 
