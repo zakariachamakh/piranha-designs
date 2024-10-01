@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('status')->default('Invitation Sent'); // Add status column
+            $table->enum('role', ['admin', 'staff'])->default('staff');
 
         });
     }
@@ -24,6 +25,8 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('status'); // Rollback the status column
+            $table->dropColumn('role');   // Rollback the role column
+
 
         });
     }
