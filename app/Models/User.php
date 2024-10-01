@@ -20,6 +20,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',       // Add role field for mass assignment
+        'status'    // Add status field for mass assignment
     ];
 
     /**
@@ -43,5 +45,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Relationship: A user (staff) can have many policies.
+     */
+    public function policies()
+    {
+        return $this->hasMany(Policy::class, 'staff_user_id');
     }
 }
